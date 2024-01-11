@@ -9,10 +9,8 @@ from typing import Mapping, Union, Any, TypeVar
 T = TypeVar('T')
 
 
-def safely_get_value(dct: Mapping,
-                     key: Any,
-                     default: Union[T, None] =
-                     None) -> Union[T, None]:
+def safely_get_value(dct: Mapping, key: Any, default: Union[T, None] =
+                     None) -> Union[Any, T]:
     '''
     The function returns the value of the Mapper with the given key
     if it is in the Mapper, else it returns an unknown as given by
