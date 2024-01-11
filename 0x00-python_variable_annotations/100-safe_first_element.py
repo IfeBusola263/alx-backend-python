@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 This module holds function that checks for the first element in an
 input, but it has to be safe annotated first before operations can
