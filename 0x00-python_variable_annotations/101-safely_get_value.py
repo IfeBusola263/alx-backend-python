@@ -6,10 +6,13 @@ the value of the dictionary.
 from typing import Mapping, Union, Any, TypeVar
 
 
-def safely_get_value(dct: Mapping[Any, Any],
+T = TypeVar('T')
+
+
+def safely_get_value(dct: Mapping,
                      key: Any,
-                     default: Union[TypeVar('T'), None] =
-                     None) -> Union[TypeVar('T'), None]:
+                     default: Union[T, None] =
+                     None) -> Union[T, None]:
     '''
     The function returns the value of the Mapper with the given key
     if it is in the Mapper, else it returns an unknown as given by
