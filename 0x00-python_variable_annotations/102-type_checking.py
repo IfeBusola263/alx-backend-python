@@ -5,7 +5,7 @@ This module houses a function that returns a list of items.
 from typing import List, Tuple, Any
 
 
-def zoom_array(lst: Tuple, factor: int = 2) -> List[Any]:
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
     '''
     This function returns a list of items in the given Tuple.
     based on the number of factors given, being 2 minimum.
