@@ -6,7 +6,7 @@ import random
 import asyncio
 
 
-async def async_generator() -> int:
+async def async_generator() -> float:
     '''
     The generator function returns a random number between
     0 and 10.
