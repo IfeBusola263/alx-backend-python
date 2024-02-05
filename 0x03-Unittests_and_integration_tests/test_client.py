@@ -23,10 +23,6 @@ class TestGithubClient(unittest.TestCase):
         value.
         '''
         mock_get.return_value = {'name': org}
-        #     mock_org.return_value = mock_get()
-        #     test = GithubOrgClient(org)
-        #     self.assertEqual(test.org, {'name': org})
-        #     mock_get.assert_called_once_with(f"https://api.github.com/orgs/{org}")
         test = GithubOrgClient(org)
         self.assertEqual(test.org, {'name': org})
         mock_get.assert_called_once_with(f"https://api.github.com/orgs/{org}")
