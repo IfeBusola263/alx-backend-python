@@ -64,7 +64,7 @@ class TestGithubClient(unittest.TestCase):
         the _public_repos_url method of the GithubOrgClient class.
         '''
         with patch('client.GithubOrgClient._public_repos_url',
-                   return_value=mock_get["repos_url"],
+                   return_value="https://api.github.com/orgs/ifeO/repos",
                    new_callable=PropertyMock) as mock_pub_rep_url:
             client_obj = GithubOrgClient('ifeO')
             self.assertEqual(client_obj.public_repos(), ["ifebusola"])
