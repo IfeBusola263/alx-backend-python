@@ -4,10 +4,8 @@ This module is a unit test for the client module.
 '''
 import unittest
 from unittest.mock import patch, PropertyMock
-# from unittest.mock
 from parameterized import parameterized
 from client import GithubOrgClient, get_json
-# from typing import Dict, List
 
 
 class TestGithubClient(unittest.TestCase):
@@ -80,12 +78,3 @@ class TestGithubClient(unittest.TestCase):
         """
         self.assertEqual(
             GithubOrgClient.has_license(repo, license_key), expected)
-
-
-# class TestIntegrationGithubOrgClient(unittest.TestCase):
-#     """
-# Testing with integration Testing with the fixtures in the fixtures module.
-#     The only methods that would be mocked, are those that make
-#     external requests.
-#     """
-#     pass
