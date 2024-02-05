@@ -36,8 +36,34 @@ class TestGithubClient(unittest.TestCase):
         accurate.
         '''
         with patch('client.GithubOrgClient.org',
-                   return_value={"repos_url": "https://example.com"},
+                   return_value={
+                       "repos_url": "https://api.github.com/orgs/p/repos"
+                   },
                    new_callable=PropertyMock) as mock_property_org:
+
+            # create a new object
             client_obj = GithubOrgClient("p")
+
+            # check if the mocked return value is the same
             self.assertEqual(client_obj._public_repos_url,
-                             "https://example.com")
+                             "https://api.github.com/orgs/p/repos")
+
+    payload = [{
+        "login": "ifeO",
+        "id": 9173322,
+        "url": "https://api.github.com/orgs/ifeO",
+        "repos_url": "https://api.github.com/orgs/ifeO/repos",
+        "name": "ifebusola",
+        }]
+
+    @patch('client.get_json', return_value=payload)
+    def test_public_repos(self, mock_get):
+        '''
+        Testing the public_repos with the get_json method mocked and also
+        the _public_repos_url method of the GithubOrgClient class.
+        '''
+        with patch('client.GithubOrgClient._public_repos_url',
+                   return_value="https://api.github.com/orgs/ifeO/repos",
+                   new_callable=PropertyMock) as mock_pub_rep_url:
+            client_obj = GithubOrgClient('ifeO')
+            self.assertEqual(client_obj.public_repos(), ["ifebusola"])
