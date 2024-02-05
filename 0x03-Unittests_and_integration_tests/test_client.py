@@ -75,5 +75,5 @@ class TestGithubClient(unittest.TestCase):
         """
         Testing if the repo has a licence key or not.
         """
-        self.assertEqual(
-            GithubOrgClient.has_license(repo, license_key), expected)
+        class_met = GithubOrgClient.has_license
+        self.assertEqual(class_met(repo, license_key), expected)
