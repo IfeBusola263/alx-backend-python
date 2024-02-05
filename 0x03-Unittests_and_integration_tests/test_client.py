@@ -3,7 +3,7 @@
 This module is a unit test for the client module.
 '''
 import unittest
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, MagicMock
 # from unittest.mock
 from parameterized import parameterized
 from client import GithubOrgClient, get_json
@@ -20,7 +20,7 @@ class TestGithubClient(unittest.TestCase):
         ('abc',),
         ])
     @patch('client.get_json')
-    def test_org(self, org, mock_get_json):
+    def test_org(self, org: str, mock_get_json: MagicMock) -> None:
         '''
         This method test that GithubOrgClient.org returns the correct
         value.
@@ -31,7 +31,7 @@ class TestGithubClient(unittest.TestCase):
         mock_get_json.assert_called_once_with(
             "https://api.github.com/orgs/{}".format(org))
 
-    def test_public_repos_url(self):
+    def test_public_repos_url(self) -> None:
         '''
         This tests if the result of the _public_repos_url is
         accurate.
@@ -58,7 +58,7 @@ class TestGithubClient(unittest.TestCase):
         }]
 
     @patch('client.get_json', return_value=payload)
-    def test_public_repos(self, mock_get):
+    def test_public_repos(self, mock_get: MagicMock):
         '''
         Testing the public_repos with the get_json method mocked and also
         the _public_repos_url method of the GithubOrgClient class.
@@ -79,3 +79,12 @@ class TestGithubClient(unittest.TestCase):
         """
         self.assertEqual(
             GithubOrgClient.has_license(repo, license_key), expected)
+
+
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """
+    Testing with integration Testing with the fixtures in the fixtures module.
+    The only methods that would be mocked, are those that make
+    external requests.
+    """
+    pass
