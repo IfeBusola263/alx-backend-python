@@ -58,13 +58,13 @@ class TestGithubClient(unittest.TestCase):
         }]
 
     @patch('client.get_json', return_value=payload)
-    def test_public_repos(self, mock_get: MagicMock):
+    def test_public_repos(self, mock_get):
         '''
         Testing the public_repos with the get_json method mocked and also
         the _public_repos_url method of the GithubOrgClient class.
         '''
         with patch('client.GithubOrgClient._public_repos_url',
-                   return_value="https://api.github.com/orgs/ifeO/repos",
+                   return_value=mock_get["repos_url"],
                    new_callable=PropertyMock) as mock_pub_rep_url:
             client_obj = GithubOrgClient('ifeO')
             self.assertEqual(client_obj.public_repos(), ["ifebusola"])
@@ -73,7 +73,8 @@ class TestGithubClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
         ])
-    def test_has_license(self, repo: Dict, license_key: str, expected: bool):
+    def test_has_license(
+            self, repo: Dict, license_key: str, expected: bool) -> None:
         """
         Testing if the repo has a licence key or not.
         """
