@@ -5,7 +5,7 @@ This module is a unit test for the client module.
 import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
-from client import GithubOrgClient, get_json
+from client import GithubOrgClient
 
 
 class TestGithubClient(unittest.TestCase):
