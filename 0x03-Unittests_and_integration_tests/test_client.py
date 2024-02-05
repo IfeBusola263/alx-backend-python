@@ -7,6 +7,7 @@ from unittest.mock import patch, PropertyMock
 # from unittest.mock
 from parameterized import parameterized
 from client import GithubOrgClient, get_json
+from typing import Dict, List
 
 
 class TestGithubClient(unittest.TestCase):
@@ -72,7 +73,7 @@ class TestGithubClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
         ])
-    def test_has_license(self, repo, license_key, expected):
+    def test_has_license(self, repo: Dict, license_key: str, expected: bool):
         """
         Testing if the repo has a licence key or not.
         """
