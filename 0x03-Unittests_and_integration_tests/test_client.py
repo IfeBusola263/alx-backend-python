@@ -3,7 +3,8 @@
 This module is a unit test for the client module.
 '''
 import unittest
-from unittest.mock import patch, PropertyMock
+# from unittest.mock import patch, PropertyMock
+from unittest import mock
 from parameterized import parameterized
 from client import GithubOrgClient, get_json
 
@@ -17,7 +18,7 @@ class TestGithubClient(unittest.TestCase):
         ('google',),
         ('abc',),
         ])
-    @patch('client.get_json')
+    @mock.patch('client.get_json')
     def test_org(self, org, mock_get_json):
         '''
         This method test that GithubOrgClient.org returns the correct
@@ -34,8 +35,8 @@ class TestGithubClient(unittest.TestCase):
         This tests if the result of the _public_repos_url is
         accurate.
         '''
-        with patch('client.GithubOrgClient.org',
-                   new_callable=PropertyMock) as mock_property_org:
+        with mock.patch('client.GithubOrgClient.org',
+                        new_callable=mock.PropertyMock) as mock_property_org:
             mock_property_org.return_value = {
                 "repos_url": "https://example.com"}
             client_obj = GithubOrgClient("p")
