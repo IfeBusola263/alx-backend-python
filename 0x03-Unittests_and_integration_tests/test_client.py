@@ -3,12 +3,13 @@
 This module is a unit test for the client module.
 '''
 import unittest
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, MagicMock
 from parameterized import parameterized
 from client import GithubOrgClient
+from fixtures import TEST_PAYLOAD
 
 
-class TestGithubClient(unittest.TestCase):
+class TestGithubOrgClient(unittest.TestCase):
     '''
     This is a test for the githuborg client method.
     To check if it has the correct return value.
@@ -82,10 +83,12 @@ class TestGithubClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+
+
 # @parameterized_class(
 #     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),[
-#         (,,,,),
-#         (,,,,),
+#         (TEST_PAYLOAD[0][0],TEST_PAYLOAD[0][1],
+#          TEST_PAYLOAD[0][2],TEST_PAYLOAD[0][3],)
 #         ])
 # class TestIntegrationGithubOrgClient(unittest.TestCase):
 #     '''
@@ -97,8 +100,13 @@ class TestGithubClient(unittest.TestCase):
 #         """
 #         Method to run one when each test in the class runs.
 #         """
-#         self.get_patcher = patch('requests.get')
-#         self.get_patcher.start()
+#         cls.get_patcher = patch('requests.get')
+#         cls.mock_get = cls.get_patcher.start()
+#         side_effect = [cls.org_payload, cls.repos_payload,
+#                        cls.expected_repos, cls.apache2_repos]
+#         cls.mock_get.json.side_effect = side_effect
+#         mock_response = MagicMock()
+#         mock_response.side_effect = side_effect
 #     def tearDownClass(cls):
 #         """
 #         The final method that runs after all the test is completed.
