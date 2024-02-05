@@ -7,7 +7,7 @@ from unittest.mock import patch, PropertyMock
 # from unittest.mock
 from parameterized import parameterized
 from client import GithubOrgClient, get_json
-from typing import Dict, List
+# from typing import Dict, List
 
 
 class TestGithubClient(unittest.TestCase):
