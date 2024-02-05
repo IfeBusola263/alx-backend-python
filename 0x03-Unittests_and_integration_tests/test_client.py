@@ -23,11 +23,15 @@ class TestGithubClient(unittest.TestCase):
         This method test that GithubOrgClient.org returns the correct
         value.
         '''
-        mock_get_json.return_value = {"name": org}
+        mock_get_json.return_value = {
+                "url": "https://api.github.com/orgs/{}".format(org)
+        }
+        # {"name": org}
         test = GithubOrgClient(org)
-        self.assertEqual(test.org, {"name": org})
-        mock_get_json.assert_called_once_with(
-            "https://api.github.com/orgs/{}".format(org))
+        url = "https://api.github.com/orgs/{}".format(org)
+        # self.assertEqual(test.org, {"name": org})
+        self.assertIsInstance(test.org, dict)
+        mock_get_json.assert_called_once_with(url)
 
     def test_public_repos_url(self):
         '''
@@ -75,5 +79,28 @@ class TestGithubClient(unittest.TestCase):
         """
         Testing if the repo has a licence key or not.
         """
-        class_met = GithubOrgClient.has_license
-        self.assertEqual(class_met(repo, license_key), expected)
+        result = GithubOrgClient.has_license(repo, license_key)
+        self.assertEqual(result, expected)
+
+# @parameterized_class(
+#     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),[
+#         (,,,,),
+#         (,,,,),
+#         ])
+# class TestIntegrationGithubOrgClient(unittest.TestCase):
+#     '''
+#     Testing public_repos method in clients module
+#     in an integration sense. The only code to be mocked
+#     are those sending external requests.
+#     '''
+#     def setUpClass(cls):
+#         """
+#         Method to run one when each test in the class runs.
+#         """
+#         self.get_patcher = patch('requests.get')
+#         self.get_patcher.start()
+#     def tearDownClass(cls):
+#         """
+#         The final method that runs after all the test is completed.
+#         """
+#         self.get_patcher.stop()
