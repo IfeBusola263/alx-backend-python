@@ -67,3 +67,14 @@ class TestGithubClient(unittest.TestCase):
                    new_callable=PropertyMock) as mock_pub_rep_url:
             client_obj = GithubOrgClient('ifeO')
             self.assertEqual(client_obj.public_repos(), ["ifebusola"])
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+        ])
+    def test_has_license(self, repo, license_key, expected):
+        """
+        Testing if the repo has a licence key or not.
+        """
+        self.assertEqual(
+            GithubOrgClient.has_license(repo, license_key), expected)
