@@ -81,17 +81,19 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+
 @parameterized_class(
-    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),[
-        (TEST_PAYLOAD[0][0],TEST_PAYLOAD[0][1],
-         TEST_PAYLOAD[0][2],TEST_PAYLOAD[0][3],)
-        ])
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"), [
+        (TEST_PAYLOAD[0][0], TEST_PAYLOAD[0][1],
+         TEST_PAYLOAD[0][2], TEST_PAYLOAD[0][3],)
+    ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     '''
     Testing public_repos method in clients module
     in an integration sense. The only code to be mocked
     are those sending external requests.
     '''
+    @classmethod
     def setUpClass(cls):
         """
         Method to run one when each test in the class runs.
@@ -107,8 +109,34 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # mock_response = MagicMock()
         # mock_response.side_effect = side_effect
 
+    @classmethod
     def tearDownClass(cls):
         """
         The final method that runs after all the test is completed.
         """
         cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """
+        Testing the public repos method to validate the appropriate
+        result for each call to the url. like so:
+        >> A call for 'org payload' returns dict 'repo_payload'
+        >> the next call to 'repo_payload' returns a list of 'expected_payload'
+        >> the next call to 'repo_payload' with license should return
+        'apache_payload'
+        (Check the fixtures in the fixtures.py file to get context and also
+        the client.py module)
+        """
+        client_obj = GithubOrgClient('google')
+        client_repo = client_obj.public_repos()
+        self.assertEqual(client_repo, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """
+        Testing the public repo with a licence key to check if it returns the
+        appache repos.
+        """
+        client_obj = GithubOrgClient('google')
+        license = "apache-2.0"
+        client_repo = client_obj.public_repos(license)
+        self.assertEqual(client_repo, self.apache2_repos)
