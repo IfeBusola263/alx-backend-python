@@ -4,7 +4,7 @@ This module is a unit test for the client module.
 '''
 import unittest
 from unittest.mock import patch, PropertyMock, MagicMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 
@@ -27,10 +27,8 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.return_value = {
                 "url": "https://api.github.com/orgs/{}".format(org)
         }
-        # {"name": org}
         test = GithubOrgClient(org)
         url = "https://api.github.com/orgs/{}".format(org)
-        # self.assertEqual(test.org, {"name": org})
         self.assertIsInstance(test.org, dict)
         mock_get_json.assert_called_once_with(url)
 
@@ -83,30 +81,34 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
-# @parameterized_class(
-#     ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),[
-#         (TEST_PAYLOAD[0][0],TEST_PAYLOAD[0][1],
-#          TEST_PAYLOAD[0][2],TEST_PAYLOAD[0][3],)
-#         ])
-# class TestIntegrationGithubOrgClient(unittest.TestCase):
-#     '''
-#     Testing public_repos method in clients module
-#     in an integration sense. The only code to be mocked
-#     are those sending external requests.
-#     '''
-#     def setUpClass(cls):
-#         """
-#         Method to run one when each test in the class runs.
-#         """
-#         cls.get_patcher = patch('requests.get')
-#         cls.mock_get = cls.get_patcher.start()
-#         side_effect = [cls.org_payload, cls.repos_payload,
-#                        cls.expected_repos, cls.apache2_repos]
-#         cls.mock_get.json.side_effect = side_effect
-#         mock_response = MagicMock()
-#         mock_response.side_effect = side_effect
-#     def tearDownClass(cls):
-#         """
-#         The final method that runs after all the test is completed.
-#         """
-#         self.get_patcher.stop()
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),[
+        (TEST_PAYLOAD[0][0],TEST_PAYLOAD[0][1],
+         TEST_PAYLOAD[0][2],TEST_PAYLOAD[0][3],)
+        ])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    '''
+    Testing public_repos method in clients module
+    in an integration sense. The only code to be mocked
+    are those sending external requests.
+    '''
+    def setUpClass(cls):
+        """
+        Method to run one when each test in the class runs.
+        """
+        cls.get_patcher = patch('requests.get')
+        cls.mock_get = cls.get_patcher.start()
+        side_eff = [MagicMock(json=MagicMock(return_value=cls.org_payload)),
+                    MagicMock(json=MagicMock(return_value=cls.repos_payload)),
+                    MagicMock(json=MagicMock(return_value=cls.expected_repos)),
+                    MagicMock(json=MagicMock(return_value=cls.apache2_repos))
+                    ]
+        cls.mock_get.side_effect = side_eff
+        # mock_response = MagicMock()
+        # mock_response.side_effect = side_effect
+
+    def tearDownClass(cls):
+        """
+        The final method that runs after all the test is completed.
+        """
+        cls.get_patcher.stop()
